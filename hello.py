@@ -1,15 +1,11 @@
 # -*- coding:utf-8 -*-
-
 from flask import Flask
 from flask import request
 import requests
 from tuling import tulin
 import hashlib
 from time import time
-
 import xml.etree.ElementTree as et
-
-import muba
 
 
 app = Flask(__name__)
@@ -33,9 +29,9 @@ def wechat():
         hascode = hashlib.sha1(s.encode('utf-8')).hexdigest()
 
         if hascode == signature:
-       	 return echostr
+       	  return echostr
         else:
-       	 return ""
+       	  return ""
 
 
     if request.method == 'POST':
@@ -61,28 +57,22 @@ def wechat():
          else:
            text_str = '''<xml>
            <ToUserName><![CDATA[%s]]></ToUserName>
-	   <FromUserName><![CDATA[%s]]></FromUserName>
+	       <FromUserName><![CDATA[%s]]></FromUserName>
            <CreateTime>%d</CreateTime>
            <MsgType><![CDATA[%s]]></MsgType>
            <Content><![CDATA[%s]]></Content>
            </xml>'''
 
            Content = tulin(Content)
-
-          # with open('/home/work/test.txt', 'w') as f:
-          # 	f.write(MsgType)
-
-         return text_str % (fromUser, ToUserName, int(time()),MsgType,Content)  
+           return text_str % (fromUser, ToUserName, int(time()),MsgType,Content)  
         
-         if MsgType == "voice":
-          Recognition = xml_rec.find('Recognition').text
-          if Recognition =="开":
-           requests.get(url="http://led.flyerbirdy.com:9088")
-           return "success"
-          elif Recognition =="关":
-           requests.get(url="http://led.flyerbirdy.com:9088/close")
-           return "success"
-          else:
+         if Recognition =="开":
+            requests.get(url="http://led.flyerbirdy.com:9088")
+            return "success"
+         elif Recognition =="关":
+            requests.get(url="http://led.flyerbirdy.com:9088/close")
+            return "success"
+         else:
            text_str = '''<xml>
            <ToUserName><![CDATA[%s]]></ToUserName>
            <FromUserName><![CDATA[%s]]></FromUserName>
@@ -96,7 +86,7 @@ def wechat():
          #with open('/home/work/test.txt', 'w') as f:
          #      f.write(Content)
 
-          return text_str % (fromUser, ToUserName, int(time()),Recognition)  
+         return text_str % (fromUser, ToUserName, int(time()),Recognition)  
 
 
 
