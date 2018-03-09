@@ -45,20 +45,19 @@ def wechat():
          ToUserName = xml_rec.find('ToUserName').text
          fromUser = xml_rec.find('FromUserName').text
          MsgType = xml_rec.find('MsgType').text
-       #  Content = xml_rec.find('Content').text
          MsgId = xml_rec.find('MsgId').text
-        # Recognition = xml_rec.find('Recognition').text
-       
+         if MsgType == "text":
+           Content =xml_rec.find('Content').text
+         if MsgType == "Voice":
+           Recognition = xml_rec.find('Recognition').text
 
-
-         if MsgType == "text" and Content == "开":
-           Content = xml_rec.find('Content').text
-            #if Content =="开":
-           requests.get(url="http://led.flyerbirdy.com:9088")
-           return "success"
-          #elif Content =="关":
-          # requests.get(url="http://led.flyerbirdy.com:9088/close")
-          # return "success"
+         if Content == "开":
+            Content = xml_rec.find('Content').text
+            requests.get(url="http://led.flyerbirdy.com:9088")
+            return "success"
+         elif Content =="关":
+            requests.get(url="http://led.flyerbirdy.com:9088/close")
+            return "success"
          else:
            text_str = '''<xml>
            <ToUserName><![CDATA[%s]]></ToUserName>
