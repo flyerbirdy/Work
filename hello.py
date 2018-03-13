@@ -6,7 +6,7 @@ from tuling import tulin
 import hashlib
 from time import time
 import xml.etree.ElementTree as et
-
+import re
 
 app = Flask(__name__)
 
@@ -42,14 +42,21 @@ def wechat():
          fromUser = xml_rec.find('FromUserName').text
          MsgType = xml_rec.find('MsgType').text
          MsgId = xml_rec.find('MsgId').text
+         
          if MsgType == "text":
             Content =xml_rec.find('Content').text
-            if Content == "开":
+            openl = re.search("开",Content)             
+            close = re.search("关",Content)
+
+
+            if openl != None:
                requests.get(url="http://led.flyerbirdy.com:9088")
-            return "success"
-            elif Content =="关":
-              requests.get(url="http://led.flyerbirdy.com:9088/close")
-            return "success"
+               return "success"
+            
+            elif close != None:
+               requests.get(url="http://led.flyerbirdy.com:9088/close")
+               return "success"
+            
             else:
                text_str = '''<xml>
                <ToUserName><![CDATA[%s]]></ToUserName>
@@ -59,33 +66,39 @@ def wechat():
                <Content><![CDATA[%s]]></Content>
                </xml>'''
                Content = tulin(Content)
-            return text_str % (fromUser, ToUserName, int(time()),MsgType,Content)  
+               return text_str % (fromUser, ToUserName, int(time()),MsgType,Content)  
 
 
 
 
 
 
-         if MsgType == "Voice":
+         if MsgType == "voice":
             Recognition = xml_rec.find('Recognition').text
-            if Recognition =="开":
+            openl = re.search("开",Recognition)
+            close = re.search("关",Recognition)
+
+
+            if openl !=None:
                requests.get(url="http://led.flyerbirdy.com:9088")
-            return "success"
-            elif Recognition =="关":
+               return "success"
+         
+            elif close !=None:
                requests.get(url="http://led.flyerbirdy.com:9088/close")
-            return "success"
+               return "success"
             else:
                text_str = '''<xml>
                <ToUserName><![CDATA[%s]]></ToUserName>
                <FromUserName><![CDATA[%s]]></FromUserName>
                <CreateTime>%d</CreateTime>
-               <MsgType><![CDATA[‘text’]]></MsgType>
+               <MsgType><![CDATA[text]]></MsgType>
                <Content><![CDATA[%s]]></Content>
                </xml>'''
-               Content = tulin(Content)
-                        #with open('/home/work/test.txt', 'w') as f:
-                       #      f.write(Content)
-            return text_str % (fromUser, ToUserName, int(time()),Recognition)  
+               #with open('/home/work/test.txt', 'w') as f:
+               #     f.write(Recognition)
+               #Recognition = tulin(Recognition)
+               #Recognition = "语音识别结果是" + Recognition                
+               return text_str % (fromUser, ToUserName, int(time()),Recognition)  
 
 
 
