@@ -50,11 +50,11 @@ def wechat():
 
 
             if openl != None:
-               requests.get(url="http://led.flyerbirdy.com:9088")
+               requests.get(url="http://led.flyerbirdy.com:9088/on")
                return "success"
             
             elif close != None:
-               requests.get(url="http://led.flyerbirdy.com:9088/close")
+               requests.get(url="http://led.flyerbirdy.com:9088/off")
                return "success"
             
             else:
