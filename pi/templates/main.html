@@ -1,0 +1,36 @@
+﻿<link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">  
+ 
+
+<style>  
+      a {  
+        width:75%  
+      }  
+</style>  
+
+
+
+
+<head>  
+      <title>LED灯开关</title>  
+</head>  
+  <body>  
+      <div class="container-fluid">  
+        <div class="row">   
+          <a href="/on" class="btn btn-success btn-lg" role="butoon">开</a>  
+        </div>  
+        </br>     
+        <div class="row">  
+          <a href="/off" class="btn btn btn-info btn-lg" role="button">关</a>  
+        </div>  
+        </br>  
+        <div class="row">  
+          <a href="/shining" class="btn btn-danger btn-lg" role="button">闪烁</a>  
+        </div>  
+        </br> 
+        <div class="video"> 
+        <img src="{{ url_for('video_feed') }}">
+        </div>
+      </div> 
+
+
+</body>
