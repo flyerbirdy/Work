@@ -66,6 +66,32 @@ def ledoff():
 
         return render_template("main.html")
 
+
+@app.route("/shining")
+def shining():
+        RPi.GPIO.setmode(RPi.GPIO.BCM)
+        RPi.GPIO.setup(18,RPi.GPIO.OUT)
+        RPi.GPIO.setup(23,RPi.GPIO.OUT)
+        
+        pwm = RPi.GPIO.PWM(23,180)
+        pwm.start(0)
+        for i in range(0,5):
+            for x in range (0,101,1):
+                pwm.ChangeDutyCycle(x)
+                time.sleep(.02)
+
+            for x in range(100,-1,-1):
+                pwm.ChangeDutyCycle(x)
+                time.sleep(.02)
+        pwm.stop()       
+        RPi.GPIO.cleanup()
+                                
+        return render_template("main.html")
+
+
+
+
+
 @app.route('/video_feed')
 
 
