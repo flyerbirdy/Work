@@ -4,6 +4,8 @@ import RPi.GPIO
 import time
 import os
 from flask import Flask, render_template, Response, request
+import signal
+import atexit
 
 from getcpu import *
 
@@ -99,7 +101,51 @@ def cpu():
 
 @app.route('/cmd',methods=['POST'])
 def cmd():
-    print(request.get_data())
+
+    atexit.register(RPi.GPIO.cleanup)    
+    RPi.GPIO.setmode(RPi.GPIO.BCM)  
+    RPi.GPIO.setup(12, RPi.GPIO.OUT)  
+    RPi.GPIO.setup(21, RPi.GPIO.OUT)
+    b = RPi.GPIO.PWM(21,50)
+    p = RPi.GPIO.PWM(12,50) #50HZ  
+    p.start(0) 
+    b.start(0)
+    time.sleep(2)  
+    cont = str(request.get_data())
+    
+    if "left" in cont:
+        atexit.register(RPi.GPIO.cleanup)
+        p.ChangeDutyCycle(5)
+        time.sleep(1)
+
+    if "right" in cont:
+        
+        atexit.register(RPi.GPIO.cleanup)
+        p.ChangeDutyCycle(10)
+        time.sleep(1)
+
+    if "up" in cont:
+        atexit.register(RPi.GPIO.cleanup)
+        b.ChangeDutyCycle(5)
+        time.sleep(1)
+
+
+
+    if "down" in cont:
+        atexit.register(RPi.GPIO.cleanup)
+        b.ChangeDutyCycle(10)
+        time.sleep(1)
+
+
+
+
+
+
+
+
+
+
+
     return request.get_data()
 
 
