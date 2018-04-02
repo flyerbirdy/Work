@@ -3,7 +3,9 @@ import sys
 import RPi.GPIO   
 import time
 import os
-from flask import Flask, render_template, Response
+from flask import Flask, render_template, Response, request
+
+from getcpu import *
 
 # import camera driver
 if os.environ.get('CAMERA'):
@@ -87,6 +89,20 @@ def shining():
         RPi.GPIO.cleanup()
                                 
         return render_template("main.html")
+
+@app.route("/cpu")
+def cpu():
+
+    
+    return CPU_temp
+
+
+@app.route('/cmd',methods=['POST'])
+def cmd():
+    print(request.get_data())
+    return request.get_data()
+
+
 
 
 
