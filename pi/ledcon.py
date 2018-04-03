@@ -18,8 +18,14 @@ else:
 # Raspberry Pi camera module (requires picamera package)
 from camera_pi import Camera
 
-
-
+global lcontrol
+global rcontrol
+global ucontrol
+global dcontrol
+lcontrol = 6.25
+rcontrol = 6.25
+ucontrol = 6.25
+dcontrol = 6.25
 
 RPi.GPIO.setmode(RPi.GPIO.BCM)
 RPi.GPIO.setup(18,RPi.GPIO.OUT)
@@ -113,35 +119,52 @@ def cmd():
     time.sleep(2)  
     cont = str(request.get_data())
     
-    if "left" in cont:
-        atexit.register(RPi.GPIO.cleanup)
-        p.ChangeDutyCycle(5)
-        time.sleep(1)
 
+    if "left" in cont:
+          global lcontrol
+          if lcontrol <=12.5:
+            lcontrol = lcontrol + 0.25
+            atexit.register(RPi.GPIO.cleanup)
+            p.ChangeDutyCycle(lcontrol)
+            time.sleep(1)
+          
+    
+    
+    
     if "right" in cont:
         
-        atexit.register(RPi.GPIO.cleanup)
-        p.ChangeDutyCycle(10)
-        time.sleep(1)
+        global rcontrol
+        if rcontrol >=2.5:
+            rcontrol = rcontrol - 0.25
+            atexit.register(RPi.GPIO.cleanup)
+            p.ChangeDutyCycle(rcontrol)
+            time.sleep(1)
 
     if "up" in cont:
-        atexit.register(RPi.GPIO.cleanup)
-        b.ChangeDutyCycle(5)
-        time.sleep(1)
+        
+        global ucontrol
+        if ucontrol >= 2.5:
+            ucontrol -= 0.5
+            atexit.register(RPi.GPIO.cleanup)
+            b.ChangeDutyCycle(ucontrol)
+            time.sleep(1)
 
 
 
     if "down" in cont:
+
+        global dcontrol
+        if dcontrol <= 12.5:
+            dcontrol += 0.25
+            atexit.register(RPi.GPIO.cleanup)
+            b.ChangeDutyCycle(dcontrol)
+            time.sleep(1)
+
+    if "stop" in cont:
         atexit.register(RPi.GPIO.cleanup)
-        b.ChangeDutyCycle(10)
+        b.ChangeDutyCycle(6.25)
+        p.ChangeDutyCycle(6.25)
         time.sleep(1)
-
-
-
-
-
-
-
 
 
 
