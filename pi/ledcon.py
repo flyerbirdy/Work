@@ -107,7 +107,7 @@ def cpu():
 
 @app.route('/cmd',methods=['POST'])
 def cmd():
-
+    
     atexit.register(RPi.GPIO.cleanup)    
     RPi.GPIO.setmode(RPi.GPIO.BCM)  
     RPi.GPIO.setup(12, RPi.GPIO.OUT)  
@@ -116,7 +116,7 @@ def cmd():
     p = RPi.GPIO.PWM(12,50) #50HZ  
     p.start(0) 
     b.start(0)
-    time.sleep(2)  
+    time.sleep(0.2)  
     cont = str(request.get_data())
     
 
@@ -126,46 +126,39 @@ def cmd():
             lcontrol = lcontrol + 0.25
             atexit.register(RPi.GPIO.cleanup)
             p.ChangeDutyCycle(lcontrol)
-            time.sleep(1)
-          
+            time.sleep(0.2) 
     
     
     
     if "right" in cont:
         
-        global rcontrol
-        if rcontrol >=2.5:
-            rcontrol = rcontrol - 0.25
+        if lcontrol >=2.5:
+            lcontrol = lcontrol - 0.25
             atexit.register(RPi.GPIO.cleanup)
-            p.ChangeDutyCycle(rcontrol)
-            time.sleep(1)
-
+            p.ChangeDutyCycle(lcontrol)
+            time.sleep(0.2)
     if "up" in cont:
         
         global ucontrol
         if ucontrol >= 2.5:
-            ucontrol -= 0.5
+            ucontrol -= 0.25
             atexit.register(RPi.GPIO.cleanup)
             b.ChangeDutyCycle(ucontrol)
-            time.sleep(1)
-
+            time.sleep(0.2)
 
 
     if "down" in cont:
 
-        global dcontrol
-        if dcontrol <= 12.5:
-            dcontrol += 0.25
+        if ucontrol <= 12.5:
+            ucontrol += 0.25
             atexit.register(RPi.GPIO.cleanup)
-            b.ChangeDutyCycle(dcontrol)
-            time.sleep(1)
-
+            b.ChangeDutyCycle(ucontrol)
+            time.sleep(0.2)
     if "stop" in cont:
         atexit.register(RPi.GPIO.cleanup)
         b.ChangeDutyCycle(6.25)
         p.ChangeDutyCycle(6.25)
-        time.sleep(1)
-
+        time.sleep(0.2)
 
 
 
