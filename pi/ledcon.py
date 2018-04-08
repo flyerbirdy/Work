@@ -95,14 +95,15 @@ def shining():
                 time.sleep(.02)
         pwm.stop()       
         RPi.GPIO.cleanup()
-                                
+        time.sleep(0.2)
+
         return render_template("main.html")
 
 @app.route("/cpu")
 def cpu():
 
     
-    return CPU_temp
+    return getCPUtemperature()
 
 
 @app.route('/cmd',methods=['POST'])
@@ -183,4 +184,4 @@ def video_feed():
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0",port=1111)
+    app.run(host="0.0.0.0",port=1112)
